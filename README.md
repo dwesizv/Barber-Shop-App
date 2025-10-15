@@ -23,7 +23,7 @@ Create the database and its administrator user. Configure the environment settin
 
 <p>Table schema:</p>
 
-<code<pre>>Schema::create('peinado', function (Blueprint $table) {
+<code><pre>Schema::create('peinado', function (Blueprint $table) {
             $table->id();
             $table->string('author', 60);
             $table->string('name', 100)->unique();
