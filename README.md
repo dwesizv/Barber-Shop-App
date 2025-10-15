@@ -38,12 +38,17 @@ DB_PASSWORD=password
 });</pre>
 
 <br>
+<p>Migration:</p>
+<pre>php artisan migrate
+php artisan migrate fresh</pre>
+
+<br>
 <p>Model:</p>
 <pre>protected $table = 'peinado';
 protected $fillable = ['author', 'name', 'hair', 'description', 'price', 'image'];</pre>
 
 <br>
-<p>Guardar cambios en git</p>
+<p>Saving in git</p>
 <pre>git add .
 git commit -m 'Mensaje commit'
 git push --set-upstream origin master
