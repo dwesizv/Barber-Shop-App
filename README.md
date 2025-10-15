@@ -23,7 +23,7 @@ Create the database and its administrator user. Configure the environment settin
 
 <p>Table schema:</p>
 
-<code>Schema::create('peinado', function (Blueprint $table) {
+<code<pre>>Schema::create('peinado', function (Blueprint $table) {
             $table->id();
             $table->string('author', 60);
             $table->string('name', 100)->unique();
@@ -33,4 +33,9 @@ Create the database and its administrator user. Configure the environment settin
             $table->string('image', 100)->unique();
             $table->timestamps();
             $table->unique(['author', 'price']);
-        });</code>
+        });</pre></code>
+
+<p>Model:</p>
+
+<code>protected $table = 'peinado';
+    protected $fillable = ['author', 'name', 'hair', 'description', 'price', 'image'];</code>

@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Peinado extends Model {
-    
-    //4º atributos
 
     protected $table = 'peinado';
     
