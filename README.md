@@ -10,7 +10,7 @@
 
 <br>
 <p>Creating model, controller, migration and resource methods</p>
-<code>php artisan make:model --migration --controller --resource Peinado</code>
+<pre>php artisan make:model --migration --controller --resource Peinado</pre>
 
 <br>
 <p>Table schema:</p>
@@ -30,3 +30,10 @@
 <p>Model:</p>
 <pre>protected $table = 'peinado';
 protected $fillable = ['author', 'name', 'hair', 'description', 'price', 'image'];</pre>
+
+<br>
+<p>Guardar cambios en git</p>
+<pre>git add .
+git commit -m 'Mensaje commit'
+git push --set-upstream origin master
+</pre>
