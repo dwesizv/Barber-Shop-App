@@ -7,13 +7,17 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About BarberShop
+## BarberShop
 
 <p>Creating the app:</p>
 
 <code>composer create-project laravel/laravel barberApp</code>
-<br>
+
+<p>
+Create the database and its administrator user. Configure the environment settings in .env.
+</p>
 
 <p>Creating model, controller, migration and resource methods</p>
 
 <code>php artisan make:model --migration --controller --resource Peinado</code>
+
