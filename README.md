@@ -3,11 +3,12 @@
 ## BarberShop
 <p>Creating the app:</p>
 <code>composer create-project laravel/laravel barberApp</code>
-<p>
-Create the database and its administrator user. Configure the environment settings in .env.
-</p>
+
+<p>Create the database and its administrator user. Configure the environment settings in .env.</p>
+
 <p>Creating model, controller, migration and resource methods</p>
 <code>php artisan make:model --migration --controller --resource Peinado</code>
+
 <p>Table schema:</p>
 <pre>Schema::create('peinado', function (Blueprint $table) {
             $table->id();
@@ -20,6 +21,7 @@ Create the database and its administrator user. Configure the environment settin
             $table->timestamps();
             $table->unique(['author', 'price']);
         });</pre>
+
 <p>Model:</p>
 <pre>protected $table = 'peinado';
 protected $fillable = ['author', 'name', 'hair', 'description', 'price', 'image'];</pre>
