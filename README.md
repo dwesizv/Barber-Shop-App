@@ -7,6 +7,17 @@
 
 <br>
 <p>Create the database and its administrator user. Configure the environment settings in .env.</p>
+<pre>APP_NAME="Barber Shop App"
+...
+APP_URL=https://your.web.site/barberApp/public/
+...
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=barbershop
+DB_USERNAME=username
+DB_PASSWORD=password
+...</pre>
 
 <br>
 <p>Creating model, controller, migration and resource methods</p>
