@@ -9,15 +9,11 @@
 
 ## About BarberShop
 
-<h2>Creating the app:</h2>
+<p>Creating the app:</p>
 
-<code>
-composer create-project laravel/laravel barberApp
-</code>
+<code>composer create-project laravel/laravel barberApp</code>
 <br>
 
-<h2>Creating model, controller, migration and resource methods</h2>
+<p>Creating model, controller, migration and resource methods</p>
 
-<code>
-php artisan make:model --migration --controller --resource Peinado
-</code>
+<code>php artisan make:model --migration --controller --resource Peinado</code>
