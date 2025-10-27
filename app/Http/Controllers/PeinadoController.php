@@ -3,63 +3,91 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peinado;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PeinadoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    function index(): View {
+        $peinados = Peinado::all();//eloquent, da un array con todos los datos de la tabla
+        return view('peinado.index', ['peinados' => $peinados]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    function create(): View {
+        return view('peinado.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    function store(Request $request): RedirectResponse {
+        //eloquent ORM
+        //queda validar los datos de entrada
+        $peinado = new Peinado($request->all());//eloquent
+        $result = false;
+        try {
+            $result = $peinado->save();//eloquent, inserta objeto en la tabla
+            $txtmessage = 'The haircut has been added.';
+        } catch(UniqueConstraintViolationException $e) {
+            $txtmessage = 'Clave única.';
+        } catch(QueryException $e) {
+            $txtmessage = 'Campo null';
+        } catch(\Exception $e) {
+            $txtmessage = 'Error fatal';
+        }
+        $message = [
+            'mensajeTexto' => $txtmessage,
+        ];
+        if($result) {
+            return redirect()->route('main')->with($message);
+        } else {
+            return back()->withInput()->withErrors($message);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Peinado $peinado)
-    {
-        //
+    function show(Peinado $peinado): View {
+        //laravel: inyección de dependencia -> convierte el número del id en el objeto
+        //return view('peinado.show', compact('peinado'));
+        return view('peinado.show', ['peinado' => $peinado]);
+    }
+    
+    /*function show($id) {
+        $peinado = Peinado::find($id);
+        if($peinado == null) {
+            abort(404);
+        }
+        dd($peinado);
+    }*/
+
+    function edit(Peinado $peinado): View {
+        return view('peinado.edit', ['peinado' => $peinado]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Peinado $peinado)
-    {
-        //
+    function update(Request $request, Peinado $peinado) {
+        $result = false;
+        $peinado->fill($request->all());
+        $peinado->price = $peinado->price * 1.1;
+        try {
+            $result = $peinado->save();
+            //$result = $peinado->update($request->all());
+            $txtmessage = 'The haircut has been edited.';
+        } catch(UniqueConstraintViolationException $e) {
+            $txtmessage = 'Primary key.';
+        } catch(QueryException $e) {
+            $txtmessage = 'Null value.';
+        } catch(\Exception $e) {
+            $txtmessage = 'Fatal error.';
+        }
+        $message = [
+            'mensajeTexto' => $txtmessage,
+        ];
+        if($result) {
+            return redirect()->route('main')->with($message);
+        } else {
+            return back()->withInput()->withErrors($message);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Peinado $peinado)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Peinado $peinado)
-    {
-        //
+    function destroy(Peinado $peinado) {
     }
 }

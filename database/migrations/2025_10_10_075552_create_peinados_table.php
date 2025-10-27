@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('author', 60);
             $table->string('name', 100)->unique();
-            $table->string('hair', 20);
+            $table->string('hair', 110);
             $table->text('description');
             $table->decimal('price', 8, 2);
-            $table->string('image', 100)->unique();
+            $table->string('image', 100)->unique()->nullable();
             $table->timestamps();
             $table->unique(['author', 'price']);
         });

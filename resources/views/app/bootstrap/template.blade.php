@@ -27,20 +27,19 @@
                             <a class="nav-link active" aria-current="page" href="{{ route('about') }}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">Message</a>
+                            <a class="nav-link" href="{{ route('peinado.create') }}">Add hairstyle</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
+                                Peinado
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="{{ route('peinado.index') }}">Peinados</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="{{ route('peinado.create') }}">Create</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -55,6 +54,19 @@
             </div>
         </nav>
         <div class="container my-5">
+
+            <!-- return redirect()->route('main')->with($message); -->
+            @if(session('mensajeTexto'))
+            <div class="alert alert-success">
+                {{ session('mensajeTexto') }}
+            </div>
+            @endif
+
+            @error('mensajeTexto')
+            <div class="alert alert-danger">
+                {{ $message }}
+            </div>
+            @enderror
 
             @yield('content')
 
