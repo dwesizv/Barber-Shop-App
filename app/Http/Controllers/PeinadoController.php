@@ -63,7 +63,7 @@ class PeinadoController extends Controller
         return view('peinado.edit', ['peinado' => $peinado]);
     }
 
-    function update(Request $request, Peinado $peinado) {
+    function update(Request $request, Peinado $peinado): RedirectResponse {
         $result = false;
         $peinado->fill($request->all());
         $peinado->price = $peinado->price * 1.1;
@@ -88,7 +88,21 @@ class PeinadoController extends Controller
         }
     }
 
-    function destroy(Peinado $peinado) {
-        dd($peinado);
+    function destroy(Peinado $peinado): RedirectResponse {
+        try {
+            $result = $peinado->delete();
+            $textMessage = 'El peinado se ha eliminado.';
+        } catch(\Exception $e) {
+            $textMessage = 'El peinado no se ha podido eliminar.';
+            $result = false;
+        }
+        $message = [
+            'mensajeTexto' => $textMessage,
+        ];
+        if($result) {
+            return redirect()->route('main')->with($message);
+        } else {
+            return back()->withInput()->withErrors($message);
+        }
     }
 }
