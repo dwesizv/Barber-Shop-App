@@ -89,5 +89,6 @@ class PeinadoController extends Controller
     }
 
     function destroy(Peinado $peinado) {
+        dd($peinado);
     }
 }
