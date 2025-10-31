@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form action="{{ route('peinado.store') }}" method="post">
+<form action="{{ route('peinado.store') }}" method="post" enctype="multipart/form-data"><!-- es la única forma de poder subir un archivo -->
     @csrf
     <div class="espacio">
         <label for="author">Author:</label>
@@ -23,6 +23,18 @@
     <div class="espacio">
         <label for="price">Price of the hairstyle</label>
         <input class="form-control" step="0.01" min="0" max="999999.99" required id="price" name="price" placeholder="Price of the hairstyle" value="{{ old('price') }}" type="number">
+    </div>
+    <div class="espacio">
+        <label for="image">Picture of the hairstyle</label>
+        <input class="form-control" id="image" name="image" type="file">
+        <p>
+            Sugerencias:
+            <ul>
+                <li>mostrar vista previa de la imagen seleccionada</li>
+                <li>permitir arrastrar la imagen sobre el formulario o un área del formulario</li>
+                <li>'ocultar' el input type file</li>
+            </ul>
+        </p>
     </div>
     <div class="espacio">
         <input class="btn btn-primary" value="Add new hairstyle" type="submit">

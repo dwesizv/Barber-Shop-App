@@ -4,7 +4,10 @@
 <main class="px-3">
     <h1>{{ $peinado->name }}</h1>
     <p class="lead">
-        <img src="{{ url('assets/img/afeitado.jpg') }}" width="30%">
+        <img src="{{ $peinado->getPath() }}" width="30%">
+    </p>
+    <p class="lead">
+        <img src="{{ route('imagen.imagen', $peinado->id) }}" width="30%">
     </p>
     <p class="lead">
         {{ $peinado->description }}

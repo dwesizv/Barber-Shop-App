@@ -28,6 +28,12 @@ class PeinadoController extends Controller
         try {
             $result = $peinado->save();//eloquent, inserta objeto en la tabla
             $txtmessage = 'The haircut has been added.';
+            //si llega el archivo, lo subo y lo guardo
+            if($request->hasFile('image')) {
+                $ruta = $this->upload($request, $peinado);
+                $peinado->image = $ruta;
+                $peinado->save();
+            }
         } catch(UniqueConstraintViolationException $e) {
             $txtmessage = 'Clave única.';
         } catch(QueryException $e) {
@@ -43,6 +49,16 @@ class PeinadoController extends Controller
         } else {
             return back()->withInput()->withErrors($message);
         }
+    }
+
+    private function upload(Request $request, Peinado $peinado) {
+        $image = $request->file('image');
+        $name = $peinado->id . '.' . $image->getClientOriginalExtension();
+        $ruta = $image->storeAs('peinado', $name, 'public');
+        $ruta = $image->storeAs('peinado', $name, 'local');
+        //$rutaEntera1 = storage_path('app/public') . '/' . $ruta1;
+        //$rutaEntera2 = storage_path('app/private') . '/' . $ruta2;
+        return $ruta;
     }
 
     function show(Peinado $peinado): View {

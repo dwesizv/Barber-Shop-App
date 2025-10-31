@@ -9,4 +9,12 @@ class Peinado extends Model {
     protected $table = 'peinado';
     
     protected $fillable = ['author', 'name', 'hair', 'description', 'price', 'image'];
+
+    function getPath() {
+        $path = url('assets/img/afeitado.jpg');
+        if($this->image != null) {
+            $path = url('storage/' . $this->image);
+        }
+        return $path;
+    }
 }

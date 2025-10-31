@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PeinadoController;
 use Illuminate\Support\Facades\Route;
@@ -16,3 +17,6 @@ Route::get('peinado/{peinado}', [PeinadoController::class, 'show'])->name('peina
 Route::get('peinado/{peinado}/edit', [PeinadoController::class, 'edit'])->name('peinado.edit');
 Route::put('peinado/{peinado}', [PeinadoController::class, 'update'])->name('peinado.update');
 Route::delete('peinado/{peinado}', [PeinadoController::class, 'destroy'])->name('peinado.destroy');
+
+//imagen controller
+Route::get('imagen/{id}', [ImagenController::class, 'imagen'])->name('imagen.imagen');
