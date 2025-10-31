@@ -10,7 +10,8 @@ class ImagenController extends Controller {
     function imagen($idimagen) {
         $peinado = Peinado::find($idimagen);
         if($peinado == null || $peinado->image == null) {
-            return response()->file('/var/www/html/laraveles/barberApp/public/assets/img/noimage.jpg');
+            //dd(base_path('public/assets/img/noimage.jpg'));
+            return response()->file(base_path('public/assets/img/noimage.jpg'));
         }
         return response()->file(storage_path('app/private') . '/' . $peinado->image);
     }
