@@ -17,4 +17,13 @@ class Peinado extends Model {
         }
         return $path;
     }
+
+    function getPdf() {
+        return url('storage/pdf') . '/' . $this->id . '.pdf';
+    }
+
+    function isPdf() {
+        return file_exists(storage_path('app/public/pdf') . '/' . $this->id . '.pdf');
+    }
+    
 }

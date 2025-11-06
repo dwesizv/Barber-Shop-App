@@ -26,15 +26,19 @@
     </div>
     <div class="espacio">
         <label for="image">Picture of the hairstyle</label>
-        <input class="form-control" id="image" name="image" type="file">
-        <p>
+        <input class="form-control" id="image" name="image" type="file" accept="image/*">
+        <!-- <p>
             Sugerencias:
             <ul>
                 <li>mostrar vista previa de la imagen seleccionada</li>
                 <li>permitir arrastrar la imagen sobre el formulario o un área del formulario</li>
                 <li>'ocultar' el input type file</li>
             </ul>
-        </p>
+        </p>-->
+    </div>
+    <div class="espacio">
+        <label for="pdf">Portfolio of the hairstyle</label>
+        <input class="form-control" id="pdf" name="pdf" type="file" accept="application/pdf">
     </div>
     <div class="espacio">
         <input class="btn btn-primary" value="Add new hairstyle" type="submit">

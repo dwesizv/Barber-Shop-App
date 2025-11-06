@@ -9,6 +9,11 @@
     <p class="lead">
         <img src="{{ route('imagen.imagen', $peinado->id) }}" width="30%">
     </p>
+    @if($peinado->isPdf())
+    <p class="lead">
+        <a href="{{ $peinado->getPdf() }}" target="pdf">PDF</a>
+    </p>
+    @endif
     <p class="lead">
         {{ $peinado->description }}
     </p>

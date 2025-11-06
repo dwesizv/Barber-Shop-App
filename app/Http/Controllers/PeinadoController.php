@@ -34,6 +34,9 @@ class PeinadoController extends Controller
                 $peinado->image = $ruta;
                 $peinado->save();
             }
+            if($request->hasFile('pdf')) {
+                $ruta = $this->uploadPdf($request, $peinado);
+            }
         } catch(UniqueConstraintViolationException $e) {
             $txtmessage = 'Clave única.';
         } catch(QueryException $e) {
@@ -58,6 +61,15 @@ class PeinadoController extends Controller
         $ruta = $image->storeAs('peinado', $name, 'local');
         //$rutaEntera1 = storage_path('app/public') . '/' . $ruta1;
         //$rutaEntera2 = storage_path('app/private') . '/' . $ruta2;
+        return $ruta;
+    }
+
+    private function uploadPdf(Request $request, Peinado $peinado) {
+        $pdf = $request->file('pdf');
+        $name = $peinado->id . '.' . $pdf->getClientOriginalExtension();
+        $name = $peinado->id . '.pdf';
+        $ruta = $pdf->storeAs('pdf', $name, 'public');
+        $ruta = $pdf->storeAs('pdf', $name, 'local');
         return $ruta;
     }
 
