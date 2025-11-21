@@ -19,7 +19,7 @@ Route::get('peinado/{peinado}', [PeinadoController::class, 'show'])->name('peina
 Route::get('peinado/{peinado}/edit', [PeinadoController::class, 'edit'])->name('peinado.edit');
 Route::put('peinado/{peinado}', [PeinadoController::class, 'update'])->name('peinado.update');
 Route::delete('peinado/{peinado}', [PeinadoController::class, 'destroy'])->name('peinado.destroy');
-//Route::get('peinado/imagen/{id}', [PeinadoController::class, 'imagen'])->name('peinado.imagen');
+Route::get('peinado/pelo/{pelo}', [PeinadoController::class, 'pelo'])->name('peinado.pelo');
 
 //imagen controller
 Route::get('imagen/{id}', [ImagenController::class, 'imagen'])->name('imagen.imagen');

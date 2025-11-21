@@ -11,7 +11,7 @@ class PeinadoCreateRequest extends FormRequest
         return [
             'author'        => 'autor del peinado',
             'name'          => 'nombre del peinado',
-            'hair'          => 'tipo de pelo',
+            'idpelo'        => 'tipo de pelo',
             'description'   => 'descripción del peinado',
             'price'         => 'precio del peinado',
             'image'         => 'imagen del peinado',
@@ -36,6 +36,8 @@ class PeinadoCreateRequest extends FormRequest
             'author.min'        => $min,
             'author.max'        => $max,
             'name.unique'       => $unique,
+            'idpelo.required'   => $required,
+            'idpelo.exists'     => 'El tipo de pelo no está definido.',
             'price.required'    => $required,
             'price.numeric'     => 'El precio del peinado tiene que ser un número.',
             'price.min'         => $minNumber,
@@ -50,6 +52,7 @@ class PeinadoCreateRequest extends FormRequest
         return [
             'author' => 'required|string|min:2|max:60',
             'name'   => 'unique:peinado,name',
+            'idpelo' => 'required|exists:pelo,id',
             'price'  => 'required|numeric|min:0|max:999999.99|decimal:0,2',
             'image'  => 'nullable|image'
         ];

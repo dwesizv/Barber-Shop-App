@@ -3,37 +3,39 @@
 @section('content')
 
 <div class="container px-4 py-5" id="custom-cards">
-    <h2 class="pb-2 border-bottom">Peinados</h2>
+    <h2 class="pb-2 border-bottom">Peinados: @yield('tipopelo')</h2>
     <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
         @foreach($peinados as $peinado)
             <div class="col">
-                <a href="{{ route('peinado.show', $peinado->id) }}">
-                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
-                        style="background-image: url('{{ $peinado->getPath() }}');">
-                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                    style="background-image: url('{{ $peinado->getPath() }}');">
+                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                        <a style="text-decoration: none; color: white;" href="{{ route('peinado.show', $peinado->id) }}">
                             <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">{{ $peinado->name }}</h3>
-                            <ul class="d-flex list-unstyled mt-auto">
-                                <li class="me-auto">
-                                    <img src="https://github.com/twbs.png" alt="Bootstrap" width="32"
-                                        height="32" class="rounded-circle border border-white">
-                                </li>
-                                <li class="d-flex align-items-center me-3">
-                                    <svg class="bi me-2" width="1em" height="1em"
-                                        role="img" aria-label="Location">
-                                        <use xlink:href="#geo-fill"></use>
-                                    </svg>
-                                    <small>{{ $peinado->author }}</small>
-                                </li>
-                                <li class="d-flex align-items-center"> <svg class="bi me-2" width="1em" height="1em"
-                                        role="img" aria-label="Duration">
-                                        <use xlink:href="#calendar3"></use>
-                                    </svg>
-                                    <small>{{ $peinado->id }}</small>
-                                </li>
-                            </ul>
-                        </div>
+                        </a>
+                        <ul class="d-flex list-unstyled mt-auto">
+                            <li class="me-auto">
+                                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32"
+                                    height="32" class="rounded-circle border border-white">
+                            </li>
+                            <li class="d-flex align-items-center me-3">
+                                <svg class="bi me-2" width="1em" height="1em"
+                                    role="img" aria-label="Location">
+                                    <use xlink:href="#geo-fill"></use>
+                                </svg>
+                                <small>{{ $peinado->author }}</small>
+                            </li>
+                            <li class="d-flex align-items-center"> <svg class="bi me-2" width="1em" height="1em"
+                                    role="img" aria-label="Duration">
+                                    <use xlink:href="#calendar3"></use>
+                                </svg>
+                                <a style="text-decoration: none; color: white;" href="{{ route('peinado.pelo', $peinado->idpelo) }}">
+                                    <small>{{ $peinado->pelo->name }}</small>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                </a>
+                </div>
             </div>
         @endforeach
     </div>

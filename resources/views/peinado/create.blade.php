@@ -17,8 +17,20 @@
         <input class="form-control" minlength="3" maxlength="100" required id="name" name="name" placeholder="Name of the hairstyle" value="{{ old('name') }}" type="text">
     </div>
     <div class="espacio">
-        <label for="hair">Type of hair</label>
-        <input class="form-control" minlength="3" maxlength="110" required id="hair" name="hair" placeholder="Type of hair for the hairstyle" value="{{ old('hair') }}" type="text">
+        @error('idpelo')
+        <div class="alert alert-danger">
+            {{ $message }}
+        </div>
+        @enderror
+        <label for="idpelo">Type of hair</label>
+        <!-- The second value will be selected initially -->
+        <select name="idpelo" id="idpelo" required class="form-control">
+            <option value="" @if(old('idpelo') == null) selected  @endif disabled>Selecciona el tipo de pelo</option>
+            @foreach($pelos as $indice => $pelo)
+                <option value="{{ $indice }}" @if(old('idpelo') == $indice) selected @endif>{{ $pelo }}</option>
+            @endforeach
+        </select>
+        <!-- <input class="form-control" minlength="3" maxlength="110" required id="hair" name="hair" placeholder="Type of hair for the hairstyle" value="{{ old('hair') }}" type="text"> -->
     </div>
     <div class="espacio">
         <label for="description">Description of the hairstyle</label>

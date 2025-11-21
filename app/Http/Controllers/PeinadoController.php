@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PeinadoCreateRequest;
 use App\Models\Peinado;
+use App\Models\Pelo;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
@@ -19,10 +20,14 @@ class PeinadoController extends Controller
     }
 
     function create(): View {
-        return view('peinado.create');
+        $ids = Pelo::pluck('id');
+        dd($ids->all());
+        $pelos = Pelo::pluck('name', 'id'); //eloquent
+        return view('peinado.create', ['pelos' => $pelos]);
     }
 
     function store(PeinadoCreateRequest $request): RedirectResponse {
+        return back()->withInput();
         //eloquent ORM
         //queda validar los datos de entrada
         //primera forma: sencilla pero sin poder personalizar los mensajes
@@ -178,5 +183,9 @@ class PeinadoController extends Controller
         } else {
             return back()->withInput()->withErrors($message);
         }
+    }
+
+    function pelo(Pelo $pelo): View {
+        return view('peinado.pelo', ['pelo' => $pelo, 'peinados' => $pelo->peinados]);
     }
 }

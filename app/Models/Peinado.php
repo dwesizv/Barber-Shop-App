@@ -8,7 +8,15 @@ class Peinado extends Model {
 
     protected $table = 'peinado';
     
-    protected $fillable = ['author', 'name', 'hair', 'description', 'price', 'image'];
+    protected $fillable = ['author', 'name', 'idpelo', 'description', 'price', 'image'];
+
+    function pelo() {
+        return $this->belongsTo('App\Models\Pelo', 'idpelo');
+    }
+
+    function valoraciones() {
+        return $this->hasMany('App\Models\Valoracion', 'idpeinado');
+    }
 
     function getPath() {
         $path = url('assets/img/afeitado.jpg');
