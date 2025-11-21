@@ -12,17 +12,24 @@ class Peinado extends Model {
 
     function getPath() {
         $path = url('assets/img/afeitado.jpg');
-        if($this->image != null) {
+        if($this->image != null &&
+                file_exists(storage_path('app/public') . '/' . $this->image)) {
             $path = url('storage/' . $this->image);
         }
         return $path;
     }
 
     function getPdf() {
+        // enlace, ruta https://
+        // https://dwes.hopto.org/laraveles/barberApp/public/
+        //storage/pdf/8.pdf
         return url('storage/pdf') . '/' . $this->id . '.pdf';
     }
 
     function isPdf() {
+        // ruta de una rchivo dentro del ordenador
+        //var/www/html/laraveles/barberApp/storage/
+        //app/public/pdf/8.pdf
         return file_exists(storage_path('app/public/pdf') . '/' . $this->id . '.pdf');
     }
     

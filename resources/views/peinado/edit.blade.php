@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form action="{{ route('peinado.update', $peinado->id) }}" method="post">
+<form action="{{ route('peinado.update', $peinado->id) }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')
     <div class="espacio">
@@ -24,6 +24,22 @@
     <div class="espacio">
         <label for="price">Price of the hairstyle</label>
         <input class="form-control" step="0.01" min="0" max="999999.99" required id="price" name="price" placeholder="Price of the hairstyle" value="{{ old('price', $peinado->price) }}" type="number">
+    </div>
+    @if($peinado->image != null)
+    <div class="espacio">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="true" name="deleteImage" id="deleteImage">
+            <label class="form-check-label" for="deleteImage">
+                Delete image
+            </label>
+        </div>
+        <img src="{{ $peinado->getPath() }}" width="200px">
+        <!--<img src="{{ route('imagen.imagen', $peinado->id) }}" width="200px">-->
+    </div>
+    @endif
+    <div class="espacio">
+        <label for="image">Picture of the hairstyle</label>
+        <input class="form-control" id="image" name="image" type="file" accept="image/*">
     </div>
     <div class="espacio">
         <input class="btn btn-primary" value="Edit hairstyle" type="submit">

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PeinadoCreateRequest;
 use App\Models\Peinado;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class PeinadoController extends Controller
@@ -20,9 +22,43 @@ class PeinadoController extends Controller
         return view('peinado.create');
     }
 
-    function store(Request $request): RedirectResponse {
+    function store(PeinadoCreateRequest $request): RedirectResponse {
         //eloquent ORM
         //queda validar los datos de entrada
+        //primera forma: sencilla pero sin poder personalizar los mensajes
+        /*$validatedData = $request->validate([
+            'author' => 'required|string|min:2|max:60',
+            'price'  => 'required|numeric|min:0|max:999999.99|decimal:0,2',
+            'image'  => 'nullable|image|size:10'
+        ]);*/
+        //segunda forma
+        /*$rules = [
+            'author' => 'required|string|min:2|max:60',
+            'price'  => 'required|numeric|min:0|max:999999.99|decimal:0,2',
+            'image'  => 'nullable|image|size:10',
+            'name'   => 'unique:peinado,name',
+        ];
+        $messages = [
+            'author.required'   => 'Es obligatorio introducir al autor del peinado.',
+            'author.string'     => 'El nombre del peinado tiene que ser una cadena.',
+            'author.min'        => 'El nombre del autor no puede tener menos de 2 caracteres.',
+            'author.max'        => 'El nombre del autor no puede tener menos de 60 caracteres.',
+            'price.required'    => 'Es obligatorio introducir el precio del peinado.',
+            'price.numeric'     => 'El precio del peinado tiene que ser un número.',
+            'price.min'         => 'El precio del peinado no puede ser negativo.',
+            'price.max'         => 'El precio del peinado no puede superar 1.000.000 euros.',
+            'price.decimal'     => 'El precio del peinado ha de tener como mucho 2 decimales.',
+            'image.image'       => 'El archivo tiene que ser una imagen.',
+            'image.size'        => 'La imagen no puede pesar más de 10 KB.',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if($validator->fails()) {
+            echo 'fallo';
+            exit;
+            //return back()->withInput()->withErrors($validator);
+        }*/
+        //si hay error -> return back()->withInput()->withErrors($message);
+        //
         $peinado = new Peinado($request->all());//eloquent
         $result = false;
         try {
@@ -92,10 +128,20 @@ class PeinadoController extends Controller
     }
 
     function update(Request $request, Peinado $peinado): RedirectResponse {
+        //validar los datos
+
         $result = false;
+        if($request->deleteImage == 'true') {
+            //borrado de ambos archivos
+            $peinado->image = null;
+        }
         $peinado->fill($request->all());
         $peinado->price = $peinado->price * 1.1;
         try {
+            if($request->hasFile('image')) {
+                $ruta = $this->upload($request, $peinado);
+                $peinado->image = $ruta;
+            }
             $result = $peinado->save();
             //$result = $peinado->update($request->all());
             $txtmessage = 'The haircut has been edited.';
