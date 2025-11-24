@@ -16,13 +16,13 @@ return new class extends Migration
             $table->string('author', 60);
             $table->string('name', 100)->unique();
             //$table->string('hair', 110);
-            $table->foreignId('idpelo');
+            $table->foreignId('idpelo'); //definir campo
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->string('image', 100)->unique()->nullable();
             $table->timestamps();
             $table->unique(['author', 'price']);
-            $table->foreign('idpelo')->references('id')->on('pelo');
+            $table->foreign('idpelo')->references('id')->on('pelo'); //definir relacion
         });
     }
 

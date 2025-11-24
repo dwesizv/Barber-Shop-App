@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PeinadoCreateRequest;
 use App\Models\Peinado;
 use App\Models\Pelo;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
@@ -20,8 +21,7 @@ class PeinadoController extends Controller
     }
 
     function create(): View {
-        $ids = Pelo::pluck('id');
-        dd($ids->all());
+        //$ids = Pelo::pluck('id');
         $pelos = Pelo::pluck('name', 'id'); //eloquent
         return view('peinado.create', ['pelos' => $pelos]);
     }
@@ -129,7 +129,8 @@ class PeinadoController extends Controller
     }*/
 
     function edit(Peinado $peinado): View {
-        return view('peinado.edit', ['peinado' => $peinado]);
+        $pelos = Pelo::pluck('name', 'id'); //eloquent
+        return view('peinado.edit', ['peinado' => $peinado, 'pelos' => $pelos]);
     }
 
     function update(Request $request, Peinado $peinado): RedirectResponse {
