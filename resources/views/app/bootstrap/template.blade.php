@@ -56,17 +56,18 @@
         </nav>
         <div class="container my-5">
 
-            <!-- return redirect()->route('main')->with($message); -->
+            <!-- mostrar mensajes de éxito -->
             @if(session('mensajeTexto'))
-            <div class="alert alert-success">
-                {{ session('mensajeTexto') }}
-            </div>
+                <div class="alert alert-success">
+                    {{ session('mensajeTexto') }}
+                </div>
             @endif
 
+            <!-- mostrar mensajes de error -->
             @error('mensajeTexto')
-            <div class="alert alert-danger">
-                {{ $message }}
-            </div>
+                <div class="alert alert-danger">
+                    {{ $message }}
+                </div>
             @enderror
 
             @yield('content')
@@ -76,5 +77,6 @@
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"></script>
         <script src="{{ url('assets/js/main.js') }}"></script>
+        @yield('scritps')
     </body>
 </html>

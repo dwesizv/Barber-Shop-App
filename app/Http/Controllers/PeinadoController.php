@@ -15,29 +15,67 @@ use Illuminate\View\View;
 
 class PeinadoController extends Controller
 {
-    function index(): View {
-        $peinados = Peinado::all();//eloquent, da un array con todos los datos de la tabla
-        return view('peinado.index', ['peinados' => $peinados]);
-    }
-
     function create(): View {
-        //$ids = Pelo::pluck('id');
-        $pelos = Pelo::pluck('name', 'id'); //eloquent
+        $pelos = Pelo::pluck('name', 'id');
         return view('peinado.create', ['pelos' => $pelos]);
     }
 
-    function store(PeinadoCreateRequest $request): RedirectResponse {
-        return back()->withInput();
-        //eloquent ORM
-        //queda validar los datos de entrada
-        //primera forma: sencilla pero sin poder personalizar los mensajes
-        /*$validatedData = $request->validate([
+    function destroy(Peinado $peinado): RedirectResponse {
+        try {
+            $result = $peinado->delete();
+            $textMessage = 'El peinado se ha eliminado.';
+        } catch(\Exception $e) {
+            $textMessage = 'El peinado no se ha podido eliminar.';
+            $result = false;
+        }
+        $message = [
+            'mensajeTexto' => $textMessage,
+        ];
+        if($result) {
+            return redirect()->route('main')->with($message);
+        } else {
+            return back()->withInput()->withErrors($message);
+        }
+    }
+
+    function edit(Peinado $peinado): View {
+        $pelos = Pelo::pluck('name', 'id');
+        return view('peinado.edit', ['peinado' => $peinado, 'pelos' => $pelos]);
+    }
+
+    function index(): View {
+        $peinados = Peinado::all();
+        return view('peinado.index', ['peinados' => $peinados]);
+    }
+
+    function pelo(Pelo $pelo): View {
+        return view('peinado.pelo', ['pelo' => $pelo, 'peinados' => $pelo->peinados]);
+    }
+
+    function show(Peinado $peinado): View {
+        return view('peinado.show', ['peinado' => $peinado]);
+    }
+    
+    /*function show($id): View {
+        $peinado = Peinado::find($id);
+        if($peinado == null) {
+            abort(404);
+        }
+        return view('peinado.show', ['peinado' => $peinado]);
+    }*/
+
+    /**
+     * Tres formas de validación:
+     * 1. Directamente en el método, con $request->validate([...])
+     * primera forma: sencilla pero sin poder personalizar los mensajes
+        $validatedData = $request->validate([
             'author' => 'required|string|min:2|max:60',
             'price'  => 'required|numeric|min:0|max:999999.99|decimal:0,2',
             'image'  => 'nullable|image|size:10'
-        ]);*/
-        //segunda forma
-        /*$rules = [
+        ]);
+     * 2. Creando un FormRequest (PeinadoCreateRequest) y usándolo como tipo del parámetro $request
+     * 3. Creando un validador manual, personalizando los mensajes, combrobando si falla
+       $rules = [
             'author' => 'required|string|min:2|max:60',
             'price'  => 'required|numeric|min:0|max:999999.99|decimal:0,2',
             'image'  => 'nullable|image|size:10',
@@ -61,15 +99,14 @@ class PeinadoController extends Controller
             echo 'fallo';
             exit;
             //return back()->withInput()->withErrors($validator);
-        }*/
-        //si hay error -> return back()->withInput()->withErrors($message);
-        //
-        $peinado = new Peinado($request->all());//eloquent
+        }
+     */
+    function store(PeinadoCreateRequest $request): RedirectResponse {
+        $peinado = new Peinado($request->all());
         $result = false;
         try {
-            $result = $peinado->save();//eloquent, inserta objeto en la tabla
+            $result = $peinado->save();
             $txtmessage = 'The haircut has been added.';
-            //si llega el archivo, lo subo y lo guardo
             if($request->hasFile('image')) {
                 $ruta = $this->upload($request, $peinado);
                 $peinado->image = $ruta;
@@ -95,47 +132,7 @@ class PeinadoController extends Controller
         }
     }
 
-    private function upload(Request $request, Peinado $peinado) {
-        $image = $request->file('image');
-        $name = $peinado->id . '.' . $image->getClientOriginalExtension();
-        $ruta = $image->storeAs('peinado', $name, 'public');
-        $ruta = $image->storeAs('peinado', $name, 'local');
-        //$rutaEntera1 = storage_path('app/public') . '/' . $ruta1;
-        //$rutaEntera2 = storage_path('app/private') . '/' . $ruta2;
-        return $ruta;
-    }
-
-    private function uploadPdf(Request $request, Peinado $peinado) {
-        $pdf = $request->file('pdf');
-        $name = $peinado->id . '.' . $pdf->getClientOriginalExtension();
-        $name = $peinado->id . '.pdf';
-        $ruta = $pdf->storeAs('pdf', $name, 'public');
-        $ruta = $pdf->storeAs('pdf', $name, 'local');
-        return $ruta;
-    }
-
-    function show(Peinado $peinado): View {
-        //laravel: inyección de dependencia -> convierte el número del id en el objeto
-        //return view('peinado.show', compact('peinado'));
-        return view('peinado.show', ['peinado' => $peinado]);
-    }
-    
-    /*function show($id) {
-        $peinado = Peinado::find($id);
-        if($peinado == null) {
-            abort(404);
-        }
-        dd($peinado);
-    }*/
-
-    function edit(Peinado $peinado): View {
-        $pelos = Pelo::pluck('name', 'id'); //eloquent
-        return view('peinado.edit', ['peinado' => $peinado, 'pelos' => $pelos]);
-    }
-
     function update(Request $request, Peinado $peinado): RedirectResponse {
-        //validar los datos
-
         $result = false;
         if($request->deleteImage == 'true') {
             //borrado de ambos archivos
@@ -168,25 +165,23 @@ class PeinadoController extends Controller
         }
     }
 
-    function destroy(Peinado $peinado): RedirectResponse {
-        try {
-            $result = $peinado->delete();
-            $textMessage = 'El peinado se ha eliminado.';
-        } catch(\Exception $e) {
-            $textMessage = 'El peinado no se ha podido eliminar.';
-            $result = false;
-        }
-        $message = [
-            'mensajeTexto' => $textMessage,
-        ];
-        if($result) {
-            return redirect()->route('main')->with($message);
-        } else {
-            return back()->withInput()->withErrors($message);
-        }
+    private function upload(Request $request, Peinado $peinado): string {
+        $image = $request->file('image');
+        $name = $peinado->id . '.' . $image->getClientOriginalExtension();
+        $ruta = $image->storeAs('peinado', $name, 'public');
+        $ruta = $image->storeAs('peinado', $name, 'local');
+        //$rutaEntera1 = storage_path('app/public') . '/' . $ruta1;
+        //$rutaEntera2 = storage_path('app/private') . '/' . $ruta2;
+        return $ruta;
     }
 
-    function pelo(Pelo $pelo): View {
-        return view('peinado.pelo', ['pelo' => $pelo, 'peinados' => $pelo->peinados]);
+    private function uploadPdf(Request $request, Peinado $peinado): string {
+        $pdf = $request->file('pdf');
+        $name = $peinado->id . '.' . $pdf->getClientOriginalExtension();
+        $name = $peinado->id . '.pdf';
+        $ruta = $pdf->storeAs('pdf', $name, 'public');
+        $ruta = $pdf->storeAs('pdf', $name, 'local');
+        return $ruta;
     }
+
 }

@@ -3,32 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\Valoracion;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
-class ValoracionController extends Controller
-{
-    function index() {
-        //
+class ValoracionController extends Controller {
+
+    function create(): View {
     }
 
-    function create() {
-        //
+    function destroy(Valoracion $valoracion): RedirectResponse {
     }
 
-    function store(Request $request) {
+    function edit(Valoracion $valoracion): View {
+    }
+
+    function index(): View {
+    }
+
+    private function saveInSession(Request $request, int $id): void {
+        $valoraciones = $request->session()->get('valoraciones');
+        if($valoraciones == null||!is_array($valoraciones)) {
+            $valoraciones = [];
+        }
+        $valoraciones[] = $id;
+        $request->session()->put('valoraciones', $valoraciones);
+    }
+
+    function show(Valoracion $valoracion): View {
+    }
+
+    function store(Request $request): RedirectResponse {
         $result = false;
         $txtMessage = 'No se ha podido agregar el comentario';
         $valoracion = new Valoracion($request->all());
         try {
             $result = $valoracion->save();
-            //guardo en la sesión que ha creado ese mensaje
-            $valoraciones = $request->session()->get('valoraciones');
-            if($valoraciones == null||!is_array($valoraciones)) {
-                $valoraciones = [];
-            }
-            $valoraciones[] = $valoracion->id;
-            $request->session()->put('valoraciones', $valoraciones);
-            //session();
+            $this->saveInSession($request, $valoracion->id);
             $txtMessage = 'Comentario agregado correctamente';
         } catch(\Exception $e) {
         }
@@ -43,19 +54,6 @@ class ValoracionController extends Controller
         }
     }
 
-    function show(Valoracion $valoracion) {
-        //
-    }
-
-    function edit(Valoracion $valoracion) {
-        //
-    }
-
-    function update(Request $request, Valoracion $valoracion) {
-        //
-    }
-
-    function destroy(Valoracion $valoracion) {
-        //
+    function update(Request $request, Valoracion $valoracion): RedirectResponse {
     }
 }

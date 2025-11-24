@@ -4,62 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Pelo;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
-class PeloController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+class PeloController extends Controller {
+
+    function create(): View {
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    function destroy(Pelo $pelo): RedirectResponse {
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    function edit(Pelo $pelo): View {
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pelo $pelo)
-    {
-        //
+    function index(): View {
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pelo $pelo)
-    {
-        //
+    function show(Pelo $pelo): View {
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pelo $pelo)
-    {
-        //
+    function store(Request $request): RedirectResponse {
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pelo $pelo)
-    {
-        //
+    function update(Request $request, Pelo $pelo): RedirectResponse {
     }
 }

@@ -52,7 +52,12 @@
                 <a href="">editar comentario</a>
             @endif
         </p>
-        <p class="text-end">{{ $valoracion->created_at->format('d/m/Y') }}</p>
+        <p class="text-end">
+            {{ $valoracion->created_at->format('d/m/Y') }}
+            @for($i = 1; $i <= $valoracion->rate; $i++)
+                ★
+            @endfor
+        </p>
     @endforeach
     <hr>
     <form method="post" action="{{ route('valoracion.store') }}">

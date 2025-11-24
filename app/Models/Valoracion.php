@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Valoracion extends Model
 {
@@ -10,7 +11,8 @@ class Valoracion extends Model
     
     protected $fillable = ['idpeinado', 'rate', 'comment'];
 
-    function peinado() {
+    //relación con el modelo Peinado, una valoración pertenece a un peinado
+    function peinado(): BelongsTo {
         return $this->belongsTo('App\Models\Peinado', 'idpeinado');
     }
 }

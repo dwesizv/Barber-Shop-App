@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Peinado;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ImagenController extends Controller {
     
-    function imagen($id) {
+    function imagen($id): BinaryFileResponse {
         $peinado = Peinado::find($id);
         if($peinado == null ||
                 $peinado->image == null ||

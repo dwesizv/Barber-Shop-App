@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pelo extends Model {
     
@@ -11,7 +12,8 @@ class Pelo extends Model {
     
     protected $fillable = ['name'];
 
-    function peinados() {
+    //relación con el modelo Peinado, un tipo de pelo tiene muchos peinados
+    function peinados(): HasMany {
         return $this->hasMany('App\Models\Peinado', 'idpelo');
     }
 }
