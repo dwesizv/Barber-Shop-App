@@ -49,7 +49,7 @@
         <p class="lead">
             {{ $valoracion->comment }}
             @if(session('valoraciones') != null && in_array($valoracion->id, session('valoraciones')))
-                <a href="">editar comentario</a>
+                <a href="{{ route('valoracion.edit', $valoracion->id) }}">editar comentario</a>
             @endif
         </p>
         <p class="text-end">

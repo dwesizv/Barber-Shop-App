@@ -12,6 +12,8 @@ Route::get('logs',[\Rap2hpoutre\LaravelLogViewer\LogViewerController::class,'ind
 //main controller
 Route::get('/', [MainController::class, 'main'])->name('main');
 Route::get('about', [MainController::class, 'about'])->name('about');
+Route::get('sql', [MainController::class, 'sql'])->name('sql');
+Route::get('inyection', [MainController::class, 'inyection'])->name('inyection');
 
 //imagen controller
 Route::get('imagen/{id}', [ImagenController::class, 'imagen'])->name('imagen.imagen');
@@ -22,6 +24,8 @@ Route::get('peinado/pelo/{pelo}', [PeinadoController::class, 'pelo'])->name('pei
 
 //valoracion controller
 Route::post('valoracion', [ValoracionController::class, 'store'])->name('valoracion.store');
+Route::get('valoracion/{valoracion}/edit', [ValoracionController::class, 'edit'])->name('valoracion.edit');
+Route::put('valoracion/{valoracion}', [ValoracionController::class, 'update'])->name('valoracion.update');
 
 // Route::get('peinado', [PeinadoController::class, 'index'])->name('peinado.index');
 // Route::get('peinado/create', [PeinadoController::class, 'create'])->name('peinado.create');

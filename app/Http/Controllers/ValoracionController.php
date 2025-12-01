@@ -15,7 +15,13 @@ class ValoracionController extends Controller {
     function destroy(Valoracion $valoracion): RedirectResponse {
     }
 
-    function edit(Valoracion $valoracion): View {
+    function edit(Request $request, Valoracion $valoracion): View {
+        if($request->session()->get('valoraciones') != null &&
+            in_array($valoracion->id, $request->session()->get('valoraciones'))) {
+            return view('valoracion.edit', ['valoracion' => $valoracion]);
+        } else {
+            abort(404);
+        }
     }
 
     function index(): View {
@@ -55,5 +61,26 @@ class ValoracionController extends Controller {
     }
 
     function update(Request $request, Valoracion $valoracion): RedirectResponse {
+        if($request->session()->get('valoraciones') != null &&
+            in_array($valoracion->id, $request->session()->get('valoraciones'))){
+            $result = false;
+            $valoracion->fill($request->all());
+            try {
+                $result = $valoracion->save();
+                $txtmessage = 'Ok, modificado.';
+            } catch(\Exception $e) {
+                $txtmessage = 'No, error.';
+            }
+            $message = [
+                'mensajeTexto' => $txtmessage,
+            ];
+            if($result) {
+                return redirect()->route('peinado.show', $valoracion->idpeinado)->with($message);
+            } else {
+                return back()->withInput()->withErrors($message);
+            }
+        } else {
+            return redirect()->route('main');
+        }
     }
 }
