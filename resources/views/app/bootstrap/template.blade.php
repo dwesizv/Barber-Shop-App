@@ -51,6 +51,20 @@
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            @guest
+                                <a class="nav-link active" href="{{ route('login') }}">Login</a>
+                            @else
+                                <a class="nav-link active" href="#" id="logout-link">
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="post" class="d-none">
+                                    @csrf
+                                </form>
+                            @endguest
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

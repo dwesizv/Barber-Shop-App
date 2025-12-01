@@ -1,5 +1,10 @@
 const aDestroys = document.querySelectorAll('.link-destroy');
 const form = document.getElementById('form-delete');
+const logoutLink = document.getElementById('logout-link');
+
+logoutLink.addEventListener('click', () => {
+  document.getElementById('logout-form').submit();
+});
 
 const destroyModal = document.getElementById('destroyModal');
 destroyModal.addEventListener('show.bs.modal', function (event) {

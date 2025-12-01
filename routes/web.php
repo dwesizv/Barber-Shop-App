@@ -35,3 +35,6 @@ Route::put('valoracion/{valoracion}', [ValoracionController::class, 'update'])->
 // Route::put('peinado/{peinado}', [PeinadoController::class, 'update'])->name('peinado.update');
 // Route::delete('peinado/{peinado}', [PeinadoController::class, 'destroy'])->name('peinado.destroy');
 //Route::resource('valoracion', ValoracionController::class);
+
+Auth::routes(['verify' => true]);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
