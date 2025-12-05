@@ -37,4 +37,6 @@ Route::put('valoracion/{valoracion}', [ValoracionController::class, 'update'])->
 //Route::resource('valoracion', ValoracionController::class);
 
 Auth::routes(['verify' => true]);
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('home/edit', [App\Http\Controllers\HomeController::class, 'edit'])->name('home.edit');
+Route::put('home', [App\Http\Controllers\HomeController::class, 'update'])->name('home.update');

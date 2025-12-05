@@ -19,10 +19,7 @@
                     Password:: {{ Auth::user()->password }}<br>
                     Created at: {{ Auth::user()->created_at->format('d/m/Y h:i:s') }}<br>
                     Edited at: {{ Auth::user()->updated_at->format('d/m/Y h:i:s') }}<br>
-                    <form method="post" action="{{ route('logout') }}">
-                        @csrf
-                        <input class="btn btn-primary" value="Logout" type="submit">
-                    </form>
+                    <a href="{{ route('home.edit') }}">Edit your profile.</a>
                 </div>
             </div>
         </div>
