@@ -27,9 +27,26 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ route('about') }}">About</a>
                         </li>
+                        @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('peinado.create') }}">Add hairstyle</a>
                         </li>
+                        @endauth
+                        @if(Auth::user() != null && Auth::user()->rol == 'admin')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Usuarios
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ route('user.index') }}">Listado</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="{{ route('user.create') }}">Crear usuario</a></li>
+                            </ul>
+                        </li>
+                        @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -52,20 +69,25 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            @guest
+                        @guest
+                            <li class="nav-item">
                                 <a class="nav-link active" href="{{ route('login') }}">Login</a>
-                            @else
+                            </li>
+                        @else
+                            <li class="nav-item">
                                 <a class="nav-link active" href="#" id="logout-link">
                                     Logout
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="post" class="d-none">
                                     @csrf
                                 </form>
-                            @endguest
-
-                            
-                        </li>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ route('home') }}">
+                                    {{ Auth::user()->name }}
+                                </a>
+                            </li>
+                        @endguest
                     </ul>
                 </div>
             </div>

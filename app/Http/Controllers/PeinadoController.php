@@ -6,6 +6,7 @@ use App\Http\Requests\PeinadoCreateRequest;
 use App\Models\Peinado;
 use App\Models\Pelo;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
@@ -15,6 +16,10 @@ use Illuminate\View\View;
 
 class PeinadoController extends Controller
 {
+    function __construct() {
+        $this->middleware('verified')->except(['show', 'index', 'pelo']);
+    }
+
     function create(): View {
         $pelos = Pelo::pluck('name', 'id');
         return view('peinado.create', ['pelos' => $pelos]);
@@ -103,6 +108,7 @@ class PeinadoController extends Controller
      */
     function store(PeinadoCreateRequest $request): RedirectResponse {
         $peinado = new Peinado($request->all());
+        $peinado->iduser = Auth::user()->id;
         $result = false;
         try {
             $result = $peinado->save();

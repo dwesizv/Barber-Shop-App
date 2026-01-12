@@ -54,6 +54,7 @@ class HomeController extends Controller {
         }
         if($request->password != null && $request->currentpassword != null) {
             $user->password = Hash::make($request->password);
+            //Auth::logout();
         }
         try {
             $result = $user->save();

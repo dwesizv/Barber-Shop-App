@@ -3,6 +3,7 @@
 use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PeinadoController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValoracionController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ Route::get('imagen/{id}', [ImagenController::class, 'imagen'])->name('imagen.ima
 
 //peinado controller
 Route::resource('peinado', PeinadoController::class);
+Route::resource('user', UserController::class);
 Route::get('peinado/pelo/{pelo}', [PeinadoController::class, 'pelo'])->name('peinado.pelo');
 
 //valoracion controller

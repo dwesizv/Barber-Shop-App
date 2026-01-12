@@ -15,9 +15,11 @@ return new class extends Migration {
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->string('image', 100)->unique()->nullable();
+            $table->foreignId('iduser');
             $table->timestamps();
             $table->unique(['author', 'price']);
             $table->foreign('idpelo')->references('id')->on('pelo');
+            $table->foreign('iduser')->references('id')->on('users');
         });
     }
 

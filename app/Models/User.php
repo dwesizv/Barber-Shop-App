@@ -21,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'rol'
     ];
 
     /**
@@ -44,5 +45,9 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    function peinados(): HasMany {
+        return $this->hasMany('App\Models\Peinado', 'iduser');
     }
 }

@@ -1,4 +1,4 @@
-@extends('template.base')
+@extends('app.bootstrap.template')
 
 @section('content')
 

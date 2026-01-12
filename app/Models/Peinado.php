@@ -10,7 +10,7 @@ class Peinado extends Model {
 
     protected $table = 'peinado';
 
-    protected $fillable = ['author', 'name', 'idpelo', 'description', 'price', 'image'];
+    protected $fillable = ['author', 'name', 'idpelo', 'description', 'price', 'image', 'iduser'];
 
     //ruta del archivo de la imagen del peinado
     function getPath(): string {
@@ -40,5 +40,9 @@ class Peinado extends Model {
     //relación con el modelo Valoración, un peinado tiene muchas valoraciones
     function valoraciones(): HasMany {
         return $this->hasMany('App\Models\Valoracion', 'idpeinado');
+    }
+
+    function user(): BelongsTo {
+        return $this->belongsTo('App\Models\User', 'iduser');
     }
 }

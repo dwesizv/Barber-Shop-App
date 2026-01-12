@@ -18,8 +18,17 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->enum('rol', ['admin', 'advanced', 'user'])->default('user');
             $table->timestamps();
         });
+
+        $user = new App\Modles\User();
+        $user->name = 'admin';
+        $user->email = 'admin@admin.es';
+        $user->password = Illuminate\Support\Facades\Hash::make('scotttiger');
+        $user->rol = 'admin';
+        $user->email_verified_at = Carbon\Carbon::now();
+        $user->save();
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
