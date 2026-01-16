@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peinado;
+use App\Models\Pelo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -42,9 +43,47 @@ class MainController extends Controller {
         dd($peinados1, $peinadosDB1, $peinadosDB2, $peinadosPDO1, $peinadosPDO2, $valor);
     }
 
-    function main(): View {
+    /*function main(): View {
         $peinados = Peinado::all();
         return view('main.main', ['peinados' => $peinados]);
+    }*/
+
+    function getField(?string $str): string {
+        $values = [
+            1 => 'id',
+            2 => 'price',
+            3 => 'idpelo'
+        ];
+        return $this->getParam($str, $values);
+    }
+
+    function getOrder(string|null $str): string {
+        $values = [
+            1 => 'asc',
+            2 => 'desc'
+        ];
+        return $this->getParam($str, $values);
+    }
+
+    function getParam(?string $str, array $values): string {
+        $result = $values[1];
+        if(isset($values[$str])) {
+            $result = $values[$str];
+        }
+        return $result;
+    }
+
+    function main(Request $request): View {
+        //select * from peinado where ... order by ... limit posicionInicial, numeroRegistros
+        //posicionInicial = (numeroPagina - 1) * numeroRegistros
+        $field = $this->getField($request->field);
+        $order = $this->getOrder($request->order);
+        //$peinados = Peinado::orderBy($field, $order)->paginate(6)->withQueryString();
+        $peinados = Peinadosa::query();
+        return view('main.main', [
+            'hasPagination' => true,
+            'peinados'      => $peinados
+        ]);
     }
 
     function sql(Request $request) {

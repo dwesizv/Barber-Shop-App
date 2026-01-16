@@ -6,11 +6,11 @@ use App\Http\Requests\PeinadoCreateRequest;
 use App\Models\Peinado;
 use App\Models\Pelo;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -54,7 +54,11 @@ class PeinadoController extends Controller
     }
 
     function pelo(Pelo $pelo): View {
-        return view('peinado.pelo', ['pelo' => $pelo, 'peinados' => $pelo->peinados]);
+        return view('peinado.pelo', [
+            'hasPagination' => true,
+            'peinados' => $pelo->peinados()->paginate(3),
+            'pelo' => $pelo
+        ]);
     }
 
     function show(Peinado $peinado): View {

@@ -12,7 +12,7 @@ class PeinadoSeeder extends Seeder {
     
     public function run(): void {
         $faker = Factory::create();
-        for ($i=0; $i < 10; $i++) { 
+        for ($i=0; $i < 2; $i++) { 
            $author = $faker->firstName();
            $name = $faker->unique()->word() . ' ' . $faker->unique()->word();
            $ids = Pelo::pluck('id');
@@ -22,6 +22,7 @@ class PeinadoSeeder extends Seeder {
            $peinado->author = $author;
            $peinado->name = $name;
            $peinado->idpelo = $ids[$position];
+           $peinado->iduser = 1;
            $peinado->description = $faker->sentence(10);
            $peinado->price = rand(5, 9500)/100;
            $peinado->save();

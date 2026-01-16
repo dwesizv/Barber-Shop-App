@@ -108,6 +108,7 @@
                 </div>
             @enderror
 
+            @yield('modalcontent')
             @yield('content')
 
         </div>
