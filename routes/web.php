@@ -13,13 +13,15 @@ Route::get('logs',[\Rap2hpoutre\LaravelLogViewer\LogViewerController::class,'ind
 //main controller
 Route::get('/', [MainController::class, 'main'])->name('main');
 Route::get('about', [MainController::class, 'about'])->name('about');
+Route::get('spa', [MainController::class, 'spa'])->name('spa');
 Route::get('sql', [MainController::class, 'sql'])->name('sql');
 Route::get('inyection', [MainController::class, 'inyection'])->name('inyection');
 
 //imagen controller
 Route::get('imagen/{id}', [ImagenController::class, 'imagen'])->name('imagen.imagen');
 
-//peinado controller
+//peinado controllerç
+
 Route::resource('peinado', PeinadoController::class);
 Route::resource('user', UserController::class);
 Route::get('peinado/pelo/{pelo}', [PeinadoController::class, 'pelo'])->name('peinado.pelo');

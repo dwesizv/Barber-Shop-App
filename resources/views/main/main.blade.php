@@ -12,41 +12,92 @@
         <ul>
             <li>
                 <a class="btn btn-link mb-2"
-                    href="{{ route('main', ['field' => 1, 'order' => 2]) }}">
+                    href="{{ route('main',
+                                        array_merge(
+                                            ['field' => 1, 'order' => 2],
+                                            request()->except('field', 'order', 'page'))) }}">
                     Los peinados más recientes
                 </a>
             </li>
             <li>
                 <a class="btn btn-link mb-2"
-                    href="{{ route('main', ['field' => 1, 'order' => 1]) }}">
+                    href="{{ route('main',
+                                        array_merge(
+                                            ['field' => 1, 'order' => 1],
+                                            request()->except('field', 'order', 'page'))) }}">
                     Los peinados más antiguos
                 </a>
             </li>
             <li>
                 <a class="btn btn-link mb-2"
-                    href="{{ route('main', ['field' => 2, 'order' => 1]) }}">
+                    href="{{ route('main',
+                                        array_merge(
+                                            ['field' => 2, 'order' => 1],
+                                            request()->except('field', 'order', 'page'))) }}">
                     Los peinados más baratos
                 </a>
             </li>
             <li>
                 <a class="btn btn-link mb-2"
-                    href="{{ route('main', ['field' => 2, 'order' => 2]) }}">
+                    href="{{ route('main',
+                                        array_merge(
+                                            ['field' => 2, 'order' => 2],
+                                            request()->except('field', 'order', 'page'))) }}">
                     Los peinados más caros
                 </a>
             </li>
             <li>
                 <a class="btn btn-link mb-2"
-                    href="{{ route('main', ['field' => 3, 'order' => 1]) }}">
+                    href="{{ route('main',
+                                        array_merge(
+                                            ['field' => 3, 'order' => 1],
+                                            request()->except('field', 'order', 'page'))) }}">
                     Tipo de pelo ordenado de la 'a' la 'z'
                 </a>
             </li>
             <li>
                 <a class="btn btn-link mb-2"
-                    href="{{ route('main', ['field' => 3, 'order' => 2]) }}">
+                    href="{{ route('main',
+                                        array_merge(
+                                            ['field' => 3, 'order' => 2],
+                                            request()->except('field', 'order', 'page'))) }}">
                     Tipo de pelo ordenado de la 'z' a la 'a'
                 </a>
             </li>
         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="filterModalLabel">Filtrar peinados por ...</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="filterForm" action="{{ route('main') }}" method="get">
+            <input type="hidden" name="field" value="{{ request('field') }}">
+            <input type="hidden" name="order" value="{{ request('order') }}">
+            <select name="idpelo" id="idpelo" class="form-control">
+                <option value=""
+                    @if($idpelo == null)
+                        selected
+                    @endif
+                >Selecciona una opción...</option>
+                @foreach($pelos as $i => $pelo)
+                    <option value="{{ $i }}"
+                        @if($i == $idpelo)
+                            selected
+                        @endif
+                    >{{ $pelo }}</option>
+                @endforeach
+            </select>
+            <input type="number" class="form-control" name="desde" value="{{ $desde }}" placeholder="Desde precio" min="0" step="1">
+            <input type="number" class="form-control" name="hasta" value="{{ $hasta }}" placeholder="Hasta precio" min="0" step="1">
+            <input type="submit" class="btn btn-primary form-control" value="Filtrar">
+            </form>
       </div>
     </div>
   </div>
@@ -58,6 +109,7 @@
     <h2 class="pb-2 border-bottom">Peinados: @yield('tipopelo')</h2>
     <div>
         <a class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#orderModal">Ordenar por ...</a>
+        <a class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#filterModal">Filtrar por ...</a>
     </div>
     <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
         @foreach($peinados as $peinado)

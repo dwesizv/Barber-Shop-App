@@ -50,9 +50,9 @@ class MainController extends Controller {
 
     function getField(?string $str): string {
         $values = [
-            1 => 'id',
-            2 => 'price',
-            3 => 'idpelo'
+            1 => 'peinado.id',
+            2 => 'peinado.price',
+            3 => 'pelo.name'
         ];
         return $this->getParam($str, $values);
     }
@@ -74,16 +74,94 @@ class MainController extends Controller {
     }
 
     function main(Request $request): View {
+        //dd($request->all(), $request->query(), $request->except(['page', 'field', 'order']));
         //select * from peinado where ... order by ... limit posicionInicial, numeroRegistros
         //posicionInicial = (numeroPagina - 1) * numeroRegistros
         $field = $this->getField($request->field);
         $order = $this->getOrder($request->order);
+        $desde = $request->desde;
+        $hasta = $request->hasta;
+        $idpelo = $request->idpelo;
+        $q = $request->q;
         //$peinados = Peinado::orderBy($field, $order)->paginate(6)->withQueryString();
-        $peinados = Peinadosa::query();
+        $sql = 'select peinado.*, pelo.name
+                from peinado
+                join pelo
+                on peinado.idpelo=pelo.id
+                where 1 = 1 ';
+        $parametrosSql = [];
+        $query = Peinado::query(); //select peinado.*, pelo.nombre from peinado
+        //if($field == 'pelo.name') {
+        $query->join('pelo', 'peinado.idpelo', '=', 'pelo.id'); //join pelo on peinado.idpelo = pelo.id
+        $query->select('peinado.*', 'pelo.name');
+        //}
+        if($idpelo != null) {
+            $query->where('idpelo', '=', $idpelo);
+            $sql .= 'and idpelo = :idpelo ';
+            $parametrosSql['idpelo'] = $idpelo;
+        }
+        if($desde != null) {
+            $query->where('price', '>=', $desde);
+            $sql .= 'and price >= :desde ';
+            $parametrosSql['desde'] = $desde;
+        }
+        if($hasta != null) {
+            $query->where('price', '<=', $hasta);
+            $sql .= 'and price <= :hasta ';
+            $parametrosSql['hasta'] = $hasta;
+        }
+        if($q != null) {
+            $query->where(function($subquery) use ($q) {
+                $subquery
+                    ->where('peinado.id', 'like', "%$q%")
+                    ->orWhere('peinado.author', 'like', '%' . $q . '%')
+                    ->orWhere('peinado.name', 'like', '%' . $q . '%')
+                    ->orWhere('peinado.idpelo', 'like', '%' . $q . '%')
+                    ->orWhere('peinado.description', 'like', '%' . $q . '%')
+                    ->orWhere('peinado.price', 'like', '%' . $q . '%')
+                    ->orWhere('pelo.name', 'like', '%' . $q . '%');
+            });
+            $sql .= 'and (
+                        peinado.id like :q1
+                        or peinado.author like :q2
+                        or peinado.name like :q3
+                        or peinado.idpelo like :q4
+                        or peinado.description like :q5
+                        or peinado.price like :q6
+                        or pelo.name like :q7
+                    ) ';
+            $parametrosSql['q1'] = '%' . $q . '%';
+            $parametrosSql['q2'] = '%' . $q . '%';
+            $parametrosSql['q3'] = '%' . $q . '%';
+            $parametrosSql['q4'] = '%' . $q . '%';
+            $parametrosSql['q5'] = '%' . $q . '%';
+            $parametrosSql['q6'] = '%' . $q . '%';
+            $parametrosSql['q7'] = '%' . $q . '%';
+        }
+        $query->orderBy($field, $order);
+        $sql .= 'order by ' . $field . ' ' .$order . ' ';
+        $peinados = $query->paginate(6)->withQueryString();
+        $page = $request->page;
+        if($page == null) {
+            $page = 1;
+        }
+        $sql .= 'limit ' . ( ($page - 1) *6) . ', 6';
+        $peinados2 = DB::select($sql, $parametrosSql);
+        //dd($peinados, $peinados2, $sql);
+        $pelos = Pelo::pluck('name', 'id');
         return view('main.main', [
+            'desde'         => $desde,
             'hasPagination' => true,
-            'peinados'      => $peinados
+            'hasta'         => $hasta,
+            'idpelo'        => $idpelo,
+            'peinados'      => $peinados,
+            'pelos'         => $pelos,
+            'q'             => $q,
         ]);
+    }
+
+    function spa() {
+        return view('main.spa');
     }
 
     function sql(Request $request) {
